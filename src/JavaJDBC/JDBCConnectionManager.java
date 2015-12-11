@@ -29,7 +29,7 @@ public class JDBCConnectionManager
 		{
 			// Holen der Einstellungen aus der db2.properties Datei
 			Properties properties = new Properties();
-			URL url = ClassLoader.getSystemResource("postgresql.properties");
+			URL url = ClassLoader.getSystemResource("mysql.properties");
 			FileInputStream stream = new FileInputStream(new File(url.toURI()));
 			properties.load(stream);
 			stream.close();
