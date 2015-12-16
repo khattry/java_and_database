@@ -18,7 +18,7 @@ public class Setup
 //		}
 //	
 		//System.out.println(db.getEmployee(137).toString());
-		Employee em=new Employee(150,"khattry","ould",12376);
+		Employee em=new Employee(1230,"sidi","ould",8900);
 		db.insertEmployee(em);
 
 }
