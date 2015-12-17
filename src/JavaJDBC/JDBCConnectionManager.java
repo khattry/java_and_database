@@ -19,17 +19,33 @@ public class JDBCConnectionManager
 
 	private Connection conn;
 	private String driverName = "org.postgresql.Driver";
+	private String propName;
 
 	/**
 	 * Erzeugt eine Datenbank-Verbindung
 	 */
-	private JDBCConnectionManager()
+	private JDBCConnectionManager(String dbName)
 	{
+		dbName.trim().toLowerCase();
+		if (dbName.contains("mysql"))
+		{
+			this.propName = "mysql.properties";
+			System.out.println(dbName);
+
+		} else if (dbName.contains(":postgresql:"))
+		{
+			this.propName = "postgres.properties";
+			System.out.println(dbName);
+
+		} else
+		{
+			throw new IllegalArgumentException("Unknown Database of ");
+
+		}
 		try
 		{
-			// Holen der Einstellungen aus der db2.properties Datei
 			Properties properties = new Properties();
-			URL url = ClassLoader.getSystemResource("mysql.properties");
+			URL url = ClassLoader.getSystemResource(propName);
 			FileInputStream stream = new FileInputStream(new File(url.toURI()));
 			properties.load(stream);
 			stream.close();
@@ -38,11 +54,11 @@ public class JDBCConnectionManager
 			String jdbcPass = properties.getProperty("jdbc_pass");
 			String jdbcUrl = properties.getProperty("jdbc_url");
 
-			// Verbindung zur DB2 herstellen
+			// Verbindung zur DB herstellen
 			Class.forName(this.getDriverName());
 			System.out.println("Connecting to a selected database...");
 			conn = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPass);
-			 System.out.println("Connected database successfully...");
+			System.out.println("Connected database successfully...");
 		} catch (FileNotFoundException e1)
 		{
 			e1.printStackTrace();
@@ -67,11 +83,11 @@ public class JDBCConnectionManager
 	 * 
 	 * @return ConnectionManager
 	 */
-	public static JDBCConnectionManager getInstance()
+	public static JDBCConnectionManager getInstance(String dbName)
 	{
 		if (instance == null)
 		{
-			instance = new JDBCConnectionManager();
+			instance = new JDBCConnectionManager(dbName);
 		}
 		return instance;
 	}
@@ -86,7 +102,7 @@ public class JDBCConnectionManager
 		return conn;
 	}
 
-	public String getDriverName()
+	private String getDriverName()
 	{
 		return driverName;
 	}

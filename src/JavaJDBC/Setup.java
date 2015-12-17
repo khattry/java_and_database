@@ -19,15 +19,15 @@ public class Setup
 //		System.out.println(em.toString());
 //		}
 //	
-		//System.out.println(db.getEmployee(137).toString());
+		System.out.println(db.getEmployee(1230).toString());
 
-		Employee em=new Employee(1230,"sidi","ould",8900);
-		db.insertEmployee(em);
+//		Employee em=new Employee(1230,"sidi","ould",8900);
+//		db.insertEmployee(em);
 
 
 //		Employee em=new Employee(150,"khattry","ould",12376);
 //		db.insertEmployee(em);
-		db.generateXls("employee", "employee.xls");
+		//db.generateXls("employee", "employee.xls");
 
 }
 
