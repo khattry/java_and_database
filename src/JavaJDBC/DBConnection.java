@@ -17,9 +17,9 @@ public class DBConnection
 	{
 
 	}
-public Connection connectToDB(String dbName)
+public Connection connectToDB(String dbServer)
 {
-	 Connection conn = JDBCConnectionManager.getInstance(dbName).getConnection();
+	 Connection conn = JDBCConnectionManager.getInstance(dbServer).getConnection();
 
 	return conn;
 }

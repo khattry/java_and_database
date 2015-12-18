@@ -17,29 +17,37 @@ public class JDBCConnectionManager
 	// instance of Driver Manager
 	private static JDBCConnectionManager instance = null;
 
-	private Connection conn;
-	private String driverName = "org.postgresql.Driver";
-	private String propName;
+	private Connection conn = null;
+	private String driverName = null;
+	private String propName = null;
 
 	/**
 	 * Erzeugt eine Datenbank-Verbindung
 	 */
-	private JDBCConnectionManager(String dbName)
+	private JDBCConnectionManager(String dbServer)
 	{
-		dbName.trim().toLowerCase();
-		if (dbName.contains("mysql"))
+		this.register(dbServer);
+
+	}
+
+	private void register(String dbServer)
+	{
+		dbServer.trim().toLowerCase();
+		if (dbServer.contains("mysql"))
 		{
 			this.propName = "mysql.properties";
-			System.out.println(dbName);
+			this.driverName = "com.mysql.jdbc.Driver";
+			System.out.println(dbServer);
 
-		} else if (dbName.contains(":postgresql:"))
+		} else if (dbServer.contains(":postgresql:"))
 		{
 			this.propName = "postgres.properties";
-			System.out.println(dbName);
+			this.driverName = "org.postgresql.Driver";
+			System.out.println(dbServer);
 
 		} else
 		{
-			throw new IllegalArgumentException("Unknown Database of ");
+			throw new IllegalArgumentException("Unknown Database!");
 
 		}
 		try
@@ -55,7 +63,7 @@ public class JDBCConnectionManager
 			String jdbcUrl = properties.getProperty("jdbc_url");
 
 			// Verbindung zur DB herstellen
-			Class.forName(this.getDriverName());
+			Class.forName(this.driverName);
 			System.out.println("Connecting to a selected database...");
 			conn = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPass);
 			System.out.println("Connected database successfully...");
@@ -75,7 +83,6 @@ public class JDBCConnectionManager
 		{
 			e.printStackTrace();
 		}
-
 	}
 
 	/**
@@ -100,11 +107,6 @@ public class JDBCConnectionManager
 	public Connection getConnection()
 	{
 		return conn;
-	}
-
-	private String getDriverName()
-	{
-		return driverName;
 	}
 
 }
