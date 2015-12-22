@@ -33,19 +33,28 @@ public class JDBCConnectionManager
 	private void register(String dbServer)
 	{
 		dbServer.trim().toLowerCase();
+		
 		if (dbServer.contains("mysql"))
 		{
 			this.propName = "mysql.properties";
 			this.driverName = "com.mysql.jdbc.Driver";
-			System.out.println(dbServer);
+			System.out.println("Connecting to DB-"+dbServer);
 
-		} else if (dbServer.contains(":postgresql:"))
+		} else if (dbServer.contains("postgres"))
 		{
 			this.propName = "postgres.properties";
 			this.driverName = "org.postgresql.Driver";
-			System.out.println(dbServer);
+			System.out.println("Connecting to DB-"+dbServer);
 
-		} else
+		} 
+		else if (dbServer.contains("oracle"))
+		{
+			this.propName = "postgres.properties";
+			this.driverName = "org.postgresql.Driver";
+			System.out.println("Connecting to DB-"+dbServer);
+
+		} 
+		else
 		{
 			throw new IllegalArgumentException("Unknown Database!");
 
@@ -61,6 +70,7 @@ public class JDBCConnectionManager
 			String jdbcUser = properties.getProperty("jdbc_user");
 			String jdbcPass = properties.getProperty("jdbc_pass");
 			String jdbcUrl = properties.getProperty("jdbc_url");
+			
 
 			// Verbindung zur DB herstellen
 			Class.forName(this.driverName);
